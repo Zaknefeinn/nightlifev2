@@ -1,0 +1,40 @@
+.search-container{
+    margin: 20px auto;
+    text-align: center;
+}
+
+input{
+    width:40%;
+    height: 25px;
+    border-radius: 7px;
+}
+button{
+    height: 35px;
+    width: 45px;
+    border-radius: 7px;
+    background-color: #6ED3FF;
+}
+
+ul{
+    padding:0;
+    margin-top: 40px;
+    list-style: none;  
+    /*height: 100px;*/
+
+}
+li{
+    display:flex;
+    width:1000px;
+    margin: 10px auto;
+    text-align: left;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+img{
+    height:100px;
+}
+
+.info{
+    width:900px;
+}

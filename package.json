@@ -1,0 +1,31 @@
+{
+  "name": "nightlife",
+  "version": "0.0.0",
+  "description": "A chat example to showcase how to use `socket.io` with a static `express` server with `async` for control flow.",
+  "main": "app.js",
+  "repository": "",
+  "author": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js --exec babel-node --presets es2015,stage-2",
+    "server": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "proxy": {
+    "/api/*": {
+      "target": "https://nightlife-v2-ehutc00f.c9users.io:8081/"
+    }
+  },
+  "dependencies": {
+    "async": "~0.2.8",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
+    "concurrently": "^3.5.1",
+    "express": "^3.21.2",
+    "mongoose": "^5.0.17",
+    "nodemon": "^1.17.3",
+    "passport": "^0.4.0",
+    "yelp-fusion": "^2.0.3"
+  }
+}
