@@ -12,20 +12,17 @@
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "proxy": {
-    "/api/*": {
-      "target": "https://nightlife-v2-ehutc00f.c9users.io:8081/"
-    }
-  },
   "dependencies": {
     "async": "~0.2.8",
     "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.1",
     "express": "^3.21.2",
+    "express-session": "^1.15.6",
     "mongoose": "^5.0.17",
     "nodemon": "^1.17.3",
     "passport": "^0.4.0",
+    "passport-twitter": "^1.0.4",
     "yelp-fusion": "^2.0.3"
   }
 }

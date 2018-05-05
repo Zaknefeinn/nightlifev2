@@ -11,8 +11,8 @@ class Search extends Component{
         return(
             <div className="search-container">
                 <form onSubmit={this.props.handleSubmit}>
-                    <input onChange={this.props.editTerm} />
-                    <button className="btn" type="submit">Go</button>
+                    <input className="form-control"onChange={this.props.editTerm} />
+                    <button className="btn btn-outline-secondary" type="submit">Go</button>
                 </form>
             </div>
         )
@@ -20,3 +20,11 @@ class Search extends Component{
 }
 
 export default Search
+
+
+// <div class="input-group mb-3">
+//   <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+//   <div class="input-group-append">
+//     <button class="btn btn-outline-secondary" type="button">Button</button>
+//   </div>
+// </div>

@@ -2,48 +2,43 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import './main.css'
-
+import Login from './login'
 import Search from './search'
 import Results from './results'
 class App extends Component{
     constructor(props){
         super(props)
         this.state = {
-            term:''
+            term:'',
+            data:[]
         }
     this.onInputChange = this.onInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     }
     onInputChange(e){
         this.setState({term: e.target.value})
-        // console.log(e.target.value)
     }
     handleSubmit(e){
         e.preventDefault()
-        // console.log(this.state.term)
-        // axios('https://nightlife-v2-ehutc00f.c9users.io:8081/api/', {
-        //         method: 'get',
-        //         data: this.state.term,
-        //         // withCredentials: true,
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //             // 'Access-Control-Allow-Origin' : 'https://nightlife-v2-ehutc00f.c9users.io:8081/'
-        //         }
-        //     })
-        //     .then(res => {console.log(res)})
-        //     .catch(err => console.log(err));
-        axios.get('https://nightlife-v2-ehutc00f.c9users.io:8081/').then(res => {console.log(res)})
+        axios.get(`https://nightlife-v2-ehutc00f.c9users.io:8081/api/search/${this.state.term}`)
+        .then(res => {
+            this.setState({ data: res.data })
+        })
+        this.setState({term:""})
     }
     render(){
-        const test = [1,2,3]
-        const test1 = test.map(x => {
-          const result =  <Results key={x}/>
+        // console.log(this.state.data)
+        const data = this.state.data;
+        const render = data.map(x => {
+          const result =  <Results key={x.id} id={x.id} name={x.name} img={x.img} url={x.url} rating={x.rating} phone={x.phone} location={x.location.display_address} rsvp={x.rsvp}/>
           return result
+        // console.log(x)
         })
         return(
             <div>
+                <Login />
                 <Search editTerm={this.onInputChange} handleSubmit={this.handleSubmit}/>
-                {test1}
+                {render}
             </div>
         )
     }
