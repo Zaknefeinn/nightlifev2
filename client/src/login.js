@@ -4,9 +4,9 @@ class Login extends Component{
 
     displayButton(){
         if(!this.props.loggedIn){
-            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', JSON.stringify(this.props.searchHistory))}href="https://nightlife-v2-ehutc00f.c9users.io:8081/auth/twitter">Log In</a>  
+            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', JSON.stringify(this.props.searchHistory))}href="https://glacial-eyrie-64416.herokuapp.com:8081/auth/twitter">Log In</a>  
         } else {
-            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', 'empty')}href="https://nightlife-v2-ehutc00f.c9users.io:8081/api/logout">Log Out</a>
+            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', 'empty')}href="https://glacial-eyrie-64416.herokuapp.com:8081/api/logout">Log Out</a>
         }
     }
     render(){
