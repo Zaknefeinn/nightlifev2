@@ -29,7 +29,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.clientURL);
+  res.setHeader('Access-Control-Allow-Origin', 'https://glacial-eyrie-64416.herokuapp.com');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, x-request-metadata');
   res.setHeader('Access-Control-Allow-Credentials', true);
