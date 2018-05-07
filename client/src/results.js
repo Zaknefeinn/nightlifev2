@@ -73,7 +73,7 @@ rsvp(e){
         } else {
             this.setState({rsvp:'going'})
         }
-        axios('https://glacial-eyrie-64416.herokuapp.com//rsvp', {
+        axios('https://glacial-eyrie-64416.herokuapp.com/rsvp', {
             method:'post',
             data:data,
             withCredentials: true
