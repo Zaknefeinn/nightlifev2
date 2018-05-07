@@ -167,9 +167,11 @@ app.get('/api/get_user', (req, res) => {
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
+    const path = require('path');
     console.log(__dirname)
     console.log(__dirname, 'client', 'build', 'index.html')
-  const path = require('path');
+    console.log(path.resolve(__dirname, 'client', 'build', 'index.html'))
+
   app.get('*', (req, res) => {
     res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
