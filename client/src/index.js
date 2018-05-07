@@ -17,7 +17,7 @@ class App extends Component{
             userID:'',
             userName:'',
             loggedIn:false,
-            searchHistory:''
+            searchHistory:[]
         }
     this.onInputChange = this.onInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -34,9 +34,7 @@ class App extends Component{
             localStorage.setItem('prevSearch', 'empty')
             this.setState({term:""})
         })
-        } else {
-            this.setState({data: []})
-        }
+        } 
     }
     onInputChange(e){
         this.setState({term: e.target.value})
