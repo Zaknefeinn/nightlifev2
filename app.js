@@ -152,13 +152,13 @@ app.get('/auth/twitter',(req, res, next) => next(),
 passport.authenticate('twitter'))
 
 app.get('/auth/twitter/callback', passport.authenticate('twitter',{
-    failureRedirect: process.env.clientURL}), (req,res) => {
-        res.redirect(process.env.clientURL);
+    failureRedirect: 'https://glacial-eyrie-64416.herokuapp.com/'}), (req,res) => {
+        res.redirect('https://glacial-eyrie-64416.herokuapp.com/');
     })
 
 app.get('/api/logout', (req, res) => {
     req.logout();
-    res.redirect(process.env.clientURL);
+    res.redirect('https://glacial-eyrie-64416.herokuapp.com/');
 })
 
 app.get('/api/get_user', (req, res) => {
@@ -175,5 +175,5 @@ if (process.env.NODE_ENV === 'production') {
 }
 const PORT = process.env.PORT || 5000;
 app.listen( PORT, () =>
-  console.log(`Listening to port  8081`)
+  console.log(`Listening to port ${PORT}`)
 );
