@@ -8,8 +8,7 @@ const   express         =   require('express'),
         User            =   require('./models/user.js'),
         Strategy        = require('passport-twitter').Strategy,
         axios           =   require('axios'),
-        cookieSession   = require('cookie-session'),
-        keys            = require('./keys')
+        cookieSession   = require('cookie-session');
         
         
 mongoose.connect(process.env.DBURL)    
