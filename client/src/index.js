@@ -17,7 +17,7 @@ class App extends Component{
             userID:'',
             userName:'',
             loggedIn:false,
-            searchHistory:[]
+            searchHistory:'empty'
         }
     this.onInputChange = this.onInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
