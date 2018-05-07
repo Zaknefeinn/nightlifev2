@@ -115,7 +115,7 @@ app.post('/test', (req,res) => {
             throw err
         } else {
             //if already stored
-            if(rsvp.length > 0)
+            if(rsvp.length > 0){
                 userArray = rsvp[0].user;
                 userNames = rsvp[0].userNames;
                 //if user doesn't exist
