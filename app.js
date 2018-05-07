@@ -166,7 +166,8 @@ app.get('/api/get_user', (req, res) => {
 })
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client'));
+  app.use(express.static('client/build'));
+  app.use(express.static('client/build/js'));
     const path = require('path');
     console.log(__dirname)
     console.log(__dirname, 'client', 'build', 'index.html')
