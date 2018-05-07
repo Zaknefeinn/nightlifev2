@@ -4,7 +4,6 @@ const   express         =   require('express'),
         mongoose        =   require('mongoose'),
         passport        = require('passport'),
         yelp            =   require('yelp-fusion'),
-        configDB        = require('./config/database.js'),
         RSVP            =   require('./models/rsvp.js'),
         User            =   require('./models/user.js'),
         Strategy        = require('passport-twitter').Strategy,
@@ -13,7 +12,7 @@ const   express         =   require('express'),
         keys            = require('./keys')
         
         
-mongoose.connect(keys.DBURL)    
+mongoose.connect(process.env.DBURL)    
 .then((db) => console.log('connection successful'))
   .catch((err) => console.error(err));
 
@@ -31,7 +30,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://nightlife-v2-ehutc00f.c9users.io');
+  res.setHeader('Access-Control-Allow-Origin', process.env.clientURL);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, x-request-metadata');
   res.setHeader('Access-Control-Allow-Credentials', true);
@@ -39,8 +38,8 @@ app.use(function(req, res, next) {
 });
 //Auth
 passport.use(new Strategy({
-    consumerKey: keys.TWITTERKEY,
-    consumerSecret:keys.TWITTERSECRET,
+    consumerKey: process.env.twitterKey,
+    consumerSecret: process.env.twitterSecret,
     callbackURL:'/auth/twitter/callback'
     // proxy: true
 }, async(token,tokenSecret,profile,done) => {
@@ -67,7 +66,7 @@ passport.deserializeUser((id, done) => {
 
 
 //Yelp API
-const apiKey = keys.YELPKEY;
+const apiKey = process.env.yelpKey;
 const client = yelp.client(apiKey);
 
 //Search town
@@ -103,7 +102,7 @@ app.get('/api/search/:id', (req,res) => {
 
 })
 // RSVP
-app.post('/test', (req,res) => {
+app.post('/rsvp', (req,res) => {
     const id = req.body.id
     let user = req.body.user
     const bar = req.body.bar
@@ -154,13 +153,13 @@ app.get('/auth/twitter',(req, res, next) => next(),
 passport.authenticate('twitter'))
 
 app.get('/auth/twitter/callback', passport.authenticate('twitter',{
-    failureRedirect: 'https://nightlife-v2-ehutc00f.c9users.io/'}), (req,res) => {
-        res.redirect('https://nightlife-v2-ehutc00f.c9users.io/');
+    failureRedirect: process.env.clientURL}), (req,res) => {
+        res.redirect(process.env.clientURL);
     })
 
 app.get('/api/logout', (req, res) => {
     req.logout();
-    res.redirect('https://nightlife-v2-ehutc00f.c9users.io/');
+    res.redirect(process.env.clientURL);
 })
 
 app.get('/api/get_user', (req, res) => {

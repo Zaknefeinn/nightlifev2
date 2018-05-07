@@ -28,7 +28,7 @@ class App extends Component{
         const history = localStorage.getItem('prevSearch');
         if(history !== null && history !== 'empty'){
             this.setState({term:JSON.parse(history)})
-            axios.get(`https://nightlife-v2-ehutc00f.c9users.io:8081/api/search/${JSON.parse(history)}`)
+            axios.get(`${process.env.serverUrl}/api/search/${JSON.parse(history)}`)
             .then(res => {
             this.setState({ data: res.data })
             localStorage.setItem('prevSearch', 'empty')
@@ -42,7 +42,7 @@ class App extends Component{
     handleSubmit(e){
         e.preventDefault()
         if(this.state.term !== this.state.searchHistory && this.state.term !== ''){
-        axios.get(`https://nightlife-v2-ehutc00f.c9users.io:8081/api/search/${this.state.term}`)
+        axios.get(`${process.env.serverUrl}/api/search/${this.state.term}`)
         .then(res => {
             this.setState({ data: res.data })
         })
@@ -53,7 +53,7 @@ class App extends Component{
     }
     
     getUser(){
-       axios.get('https://nightlife-v2-ehutc00f.c9users.io:8081/api/get_user', {withCredentials: true})
+       axios.get(`${process.env.serverUrl}/api/get_user`, {withCredentials: true})
        .then(res => {
           if(res.data !== ''){
               this.setState({userID:res.data.twitterID})

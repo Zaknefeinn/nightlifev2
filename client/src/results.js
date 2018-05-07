@@ -73,7 +73,7 @@ rsvp(e){
         } else {
             this.setState({rsvp:'going'})
         }
-        axios('https://nightlife-v2-ehutc00f.c9users.io:8081/test', {
+        axios(`${process.env.serverUrl}/rsvp`, {
             method:'post',
             data:data,
             withCredentials: true
