@@ -42,7 +42,7 @@ class App extends Component{
     handleSubmit(e){
         e.preventDefault()
         if(this.state.term !== this.state.searchHistory && this.state.term !== ''){
-        axios.get(`https://glacial-eyrie-64416.herokuapp.com:${process.env.PORT}/api/search/${this.state.term}`)
+        axios.get(`https://glacial-eyrie-64416.herokuapp.com/api/search/${this.state.term}`)
         .then(res => {
             this.setState({ data: res.data })
         })
@@ -53,7 +53,7 @@ class App extends Component{
     }
     
     getUser(){
-       axios.get(`https://glacial-eyrie-64416.herokuapp.com:${process.env.PORT}/api/get_user`, {withCredentials: true})
+       axios.get(`https://glacial-eyrie-64416.herokuapp.com/api/get_user`, {withCredentials: true})
        .then(res => {
           if(res.data !== ''){
               this.setState({userID:res.data.twitterID})
