@@ -68,6 +68,7 @@ class App extends Component{
           position: "top center"
         };
         const data = this.state.data;
+        console.log(data)
         const render = data.map(x => {
           const result =  <Results loggedIn={this.state.loggedIn} userName={this.state.userName} userID={this.state.userID} key={x.id} id={x.id} name={x.name} img={x.img} url={x.url} rating={x.rating} phone={x.phone} location={x.location.display_address} rsvp={x.rsvp}/>
           return result
