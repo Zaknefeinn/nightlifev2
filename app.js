@@ -41,7 +41,7 @@ passport.use(new Strategy({
     consumerSecret: process.env.twitterSecret,
     callbackURL:'/auth/twitter/callback'
     // proxy: true
-}, async(token,tokenSecret,profile,done) => {
+}, async (token,tokenSecret,profile,done) => {
     const existingUser = await User.findOne({twitterID: profile.id});
     if (existingUser) {
         done(null, existingUser);
@@ -167,7 +167,8 @@ app.get('/api/get_user', (req, res) => {
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
-
+    console.log(__dirname)
+    console.log(__dirname, 'client', 'build', 'index.html')
   const path = require('path');
   app.get('*', (req, res) => {
     res.sendfile(path.resolve(__dirname, 'client', 'build', 'index.html'));
@@ -175,6 +176,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 const PORT = process.env.PORT || 5000;
 app.listen( PORT, () =>{
-    console.log(process.env.NODE_ENV);
+    // console.log(process.env.NODE_ENV);
   console.log(`Listening to port ${PORT}`);
 });
