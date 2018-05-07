@@ -6,11 +6,14 @@ const   express         =   require('express'),
         yelp            =   require('yelp-fusion'),
         configDB        = require('./config/database.js'),
         RSVP            =   require('./models/rsvp.js'),
+        User            =   require('./models/user.js'),
         Strategy        = require('passport-twitter').Strategy,
-        session         = require('express-session')
+        axios           =   require('axios'),
+        cookieSession   = require('cookie-session'),
+        keys            = require('./keys')
         
         
-mongoose.connect('mongodb://Zaknefeinn:1234asdf@ds115071.mlab.com:15071/nightlife')    
+mongoose.connect(keys.DBURL)    
 .then((db) => console.log('connection successful'))
   .catch((err) => console.error(err));
 
@@ -19,38 +22,52 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
+app.use(
+  cookieSession({
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    keys: ['asdasdasdaxdfsa']
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use(function(req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'https://nightlife-v2-ehutc00f.c9users.io');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Requested-With, x-request-metadata');
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
-
 //Auth
 passport.use(new Strategy({
-    consumerKey:'jHMwAfkyvQvRa31djddYvipGM',
-    consumerSecret:'5HTbwkjiLuK2IRdMTC0jV2ptuszVz3AeEF0IeBI0VGyQdpg0h5',
-    callbackURL:'https://nightlife-v2-ehutc00f.c9users.io/auth/twitter/callback'
-}, (token,tokenSecret,profile,callback) => console.log('profile', profile)
+    consumerKey: keys.TWITTERKEY,
+    consumerSecret:keys.TWITTERSECRET,
+    callbackURL:'/auth/twitter/callback'
+    // proxy: true
+}, async(token,tokenSecret,profile,done) => {
+    const existingUser = await User.findOne({twitterID: profile.id});
+    if (existingUser) {
+        done(null, existingUser);
+    } else {
+        const user = await new User({twitterID: profile.id, name: profile.displayName}).save();
+        done(null, user);
+    }
+}
     
 ));
 
-passport.serializeUser((user, callback) => callback(null, user))
-passport.deserializeUser((obj,callback) => callback(null, obj))
+passport.serializeUser((user, done) => {
+    done(null, user.id)
+});
 
-app.use(session({
-    secret:'Something secrative',
-    resave: true,
-    saveUninitialized: true
-}));
+passport.deserializeUser((id, done) => {
+    User.findById(id).then(user => {
+        done(null, user);
+    });
+});
 
 
 //Yelp API
-const apiKey = 'FMxKEzVir_sEeThtAntSsSgbQp_9IDvaaAQW0L8CbsdZqtg8eB01RMy77Q-XuVZMAjYsumIxIJIdx602SznIhbNWPJvCidsxKfB1hrlCPgU0oM-boHiDIGyZDFFAWnYx';
+const apiKey = keys.YELPKEY;
 const client = yelp.client(apiKey);
 
 //Search town
@@ -70,7 +87,6 @@ app.get('/api/search/:id', (req,res) => {
     const firstResult = response.jsonBody.businesses;   
     firstResult.forEach( e => {
         const id = e.id;
-        // console.log(database.find(x => {x.id === id}).)
         data.push({
             id: id,
             name: e.name,
@@ -91,23 +107,28 @@ app.post('/test', (req,res) => {
     const id = req.body.id
     let user = req.body.user
     const bar = req.body.bar
+    const name = req.body.userName
     let userArray = [];
+    let userNames = [];
     RSVP.find({id}, (err,rsvp) => {
         if(err){
             throw err
         } else {
             //if already stored
-            if(rsvp.length > 0){
+            if(rsvp.length > 0)
                 userArray = rsvp[0].user;
+                userNames = rsvp[0].userNames;
                 //if user doesn't exist
                 if(userArray.indexOf(user) < 0){
                     userArray.push(user)
+                    userNames.push(name)
                 } else {
                 //if user exists
                 userArray = userArray.filter( x => x !== user)
+                userNames = userNames.filter( x => x !== name)
                 }
                 if(userArray.length > 0){
-                    RSVP.findByIdAndUpdate(rsvp[0]._id, {$set:{user:userArray}},(err,update) => {
+                    RSVP.findByIdAndUpdate(rsvp[0]._id, {$set:{user:userArray,userNames:userNames}},(err,update) => {
                         if(err) throw err;
                     })
                 } else {
@@ -117,27 +138,35 @@ app.post('/test', (req,res) => {
                 }
             } else {
             //if new    
-                RSVP.create({id:id, user:[user], bar:bar},(err, created) => {
+                RSVP.create({id:id, user:[user], userNames:[name], bar:bar},(err, created) => {
                     if(err){
                         console.log(err)
-                    } else {
-                        res.end()
-                    }
+                    } 
                 })
             }
         }
+        res.end()
     }) 
 })
 
-
 //login
-app.get('/auth/twitter', passport.authenticate('twitter'))
+app.get('/auth/twitter',(req, res, next) => next(),
+passport.authenticate('twitter'))
 
 app.get('/auth/twitter/callback', passport.authenticate('twitter',{
-    failureRedirect: '/'}), (req,res) => {
-        console.log('hit')
-        res.redirect('/');
+    failureRedirect: 'https://nightlife-v2-ehutc00f.c9users.io/'}), (req,res) => {
+        res.redirect('https://nightlife-v2-ehutc00f.c9users.io/');
     })
+
+app.get('/api/logout', (req, res) => {
+    req.logout();
+    res.redirect('https://nightlife-v2-ehutc00f.c9users.io/');
+})
+
+app.get('/api/get_user', (req, res) => {
+    res.send(req.user);
+})
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
 

@@ -1,3 +1,7 @@
+body{
+    background-color:rgb(96, 93, 92)
+}
+
 .search-container{
     width:40%;
     margin: 60px auto;
@@ -13,19 +17,41 @@
     right:15px;
     position:absolute;
 }
-ul{
-    padding:0;
-    margin-top: 40px;
-    list-style: none;  
+.description{
+    text-align: center;
+    color:white;
 }
-li{
+.results-container ul{
+    margin-top: 40px;
+}
+ul{
+    margin:10px;
+   list-style: none;  
+   padding:0;
+}
+.results-list{
     display:flex;
     width:1000px;
     margin: 10px auto;
     text-align: left;
     padding: 10px;
     border: 1px solid black;
+    border-radius: 8px;
     align-items:center;
+    background-color:rgb(251, 248, 247);
+}
+
+.showUsers{
+    width: 125px;
+    display:none;
+    position: fixed;
+    color:white;
+    z-index:100;
+    background-color:rgba(64, 65, 60,.9);
+    border-radius: 10px;
+}
+.showUsers li {
+    text-align: center;
 }
 
 img{
@@ -78,4 +104,15 @@ h3{
     height:40px;
     border-radius:50%;
     background-color:green;
+}
+.currentGoing{
+    padding:15px;
+    margin:0;
+}
+.currentGoing:hover{
+    cursor:pointer;
+}
+.userList{
+    margin-top:10px;
+    border: 2px solid white;
 }

@@ -1,21 +1,29 @@
 import React, {Component} from 'react';
 
-
 class Login extends Component{
-    constructor(props){
-        super(props)
+
+    displayButton(){
+        if(!this.props.loggedIn){
+            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', JSON.stringify(this.props.searchHistory))}href="https://nightlife-v2-ehutc00f.c9users.io:8081/auth/twitter">Log In</a>  
+        } else {
+            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', 'empty')}href="https://nightlife-v2-ehutc00f.c9users.io:8081/api/logout">Log Out</a>
+        }
     }
     render(){
-
         return(
         <div className="nav">
-            <form> 
-                <button className="btn btn-primary" href="https://nightlife-v2-ehutc00f.c9users.io/auth/twitter">Log In</button>
-            </form>
+            <div> 
+                {this.displayButton()}
+            </div>
         </div>
         )
     }
 }
 
 
-export default Login
+export default Login;
+
+// <button onClick = {async (e) => {
+//     const res = await axios.get('https://nightlife-v2-ehutc00f.c9users.io:8081/api/get_user', {withCredentials: true});
+//     // console.log(res.data);
+// }}>Get User</button>
