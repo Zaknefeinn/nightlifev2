@@ -34,6 +34,8 @@ class App extends Component{
             localStorage.setItem('prevSearch', 'empty')
             this.setState({term:""})
         })
+        } else {
+            this.setState({data: []})
         }
     }
     onInputChange(e){
