@@ -1,25 +1,42 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-class Login extends Component{
-
-    displayButton(){
-        if(!this.props.loggedIn){
-            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', JSON.stringify(this.props.searchHistory))}href="https://glacial-eyrie-64416.herokuapp.com/auth/twitter">Log In</a>  
-        } else {
-            return <a className="btn btn-primary" onClick={()=>localStorage.setItem('prevSearch', 'empty')}href="https://glacial-eyrie-64416.herokuapp.com/api/logout">Log Out</a>
-        }
+class Login extends Component {
+  displayButton() {
+    if (!this.props.loggedIn) {
+      return (
+        <a
+          className="btn btn-primary"
+          onClick={() =>
+            localStorage.setItem(
+              'prevSearch',
+              JSON.stringify(this.props.searchHistory)
+            )
+          }
+          href="/auth/twitter"
+        >
+          Log In
+        </a>
+      );
+    } else {
+      return (
+        <a
+          className="btn btn-primary"
+          onClick={() => localStorage.setItem('prevSearch', 'empty')}
+          href="/api/logout"
+        >
+          Log Out
+        </a>
+      );
     }
-    render(){
-        return(
-        <div className="nav">
-            <div> 
-                {this.displayButton()}
-            </div>
-        </div>
-        )
-    }
+  }
+  render() {
+    return (
+      <div className="nav">
+        <div>{this.displayButton()}</div>
+      </div>
+    );
+  }
 }
-
 
 export default Login;
 
